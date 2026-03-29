@@ -127,3 +127,43 @@ def test_list_projects_invalid_pagination(client: TestClient, sample_projects):
     data = response.json()
     assert data["title"] == "Request Validation Error"
     assert data["status"] == 422
+
+
+def test_projects_sorted_by_value_desc_then_name_asc(client: TestClient, projects_for_sorting):
+    """Test that projects are sorted by project_value descending, then project_name ascending."""
+    response = client.get("/api/v1/projects?area=Leeds")
+    assert response.status_code == 200
+
+    data = response.json()
+    projects = data["projects"]
+    assert len(projects) == 3
+
+    # Highest value first (500000), with Alpha before Beta (A-Z for ties)
+    assert projects[0]["project_name"] == "Alpha Project"
+    assert projects[0]["project_value"] == 500000
+    assert projects[1]["project_name"] == "Beta Project"
+    assert projects[1]["project_value"] == 500000
+    # Lowest value last
+    assert projects[2]["project_name"] == "Zeta Project"
+    assert projects[2]["project_value"] == 100000
+
+
+def test_unversioned_endpoint(client: TestClient, sample_projects):
+    """Test that /projects works the same as /api/v1/projects."""
+    versioned = client.get("/api/v1/projects?area=London")
+    unversioned = client.get("/projects?area=London")
+
+    assert versioned.status_code == 200
+    assert unversioned.status_code == 200
+    assert versioned.json() == unversioned.json()
+
+
+def test_unversioned_endpoint_project_by_id(client: TestClient, sample_projects):
+    """Test that /projects/{id} works the same as /api/v1/projects/{id}."""
+    project_id = sample_projects[0].project_id
+    versioned = client.get(f"/api/v1/projects/{project_id}")
+    unversioned = client.get(f"/projects/{project_id}")
+
+    assert versioned.status_code == 200
+    assert unversioned.status_code == 200
+    assert versioned.json() == unversioned.json()

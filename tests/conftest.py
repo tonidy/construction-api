@@ -124,3 +124,53 @@ def sample_projects(db_session):
         db_session.refresh(project)
 
     return projects
+
+
+@pytest.fixture(scope="function")
+def projects_for_sorting(db_session):
+    """Create projects with specific values to test sorting."""
+    company = Company(company_id="c-sort", company_name="Sort Company")
+    db_session.add(company)
+    db_session.commit()
+
+    projects = [
+        Project(
+            project_id="p-s1",
+            project_name="Zeta Project",
+            project_start="2024-01-01 00:00:00",
+            project_end="2025-01-01 00:00:00",
+            company_id="c-sort",
+            description="Low value, Z name",
+            project_value=100000,
+        ),
+        Project(
+            project_id="p-s2",
+            project_name="Beta Project",
+            project_start="2024-01-01 00:00:00",
+            project_end="2025-01-01 00:00:00",
+            company_id="c-sort",
+            description="High value, B name",
+            project_value=500000,
+        ),
+        Project(
+            project_id="p-s3",
+            project_name="Alpha Project",
+            project_start="2024-01-01 00:00:00",
+            project_end="2025-01-01 00:00:00",
+            company_id="c-sort",
+            description="Same high value, A name",
+            project_value=500000,
+        ),
+    ]
+
+    for project in projects:
+        db_session.add(project)
+    db_session.commit()
+
+    for p in projects:
+        db_session.execute(
+            project_area_map.insert().values(project_id=p.project_id, area="Leeds")
+        )
+    db_session.commit()
+
+    return projects
