@@ -5,16 +5,16 @@ A FastAPI-based backend service for listing construction projects with area-base
 ## Quick Start
 
 ```bash
-# Clone and setup
-git clone <repository-url>
+git clone https://github.com/tonidy/construction-api.git
 cd construction-api
 uv sync --group dev
-
-# Run the development server
+cp data/construction.db.example data/construction.db
 uv run fastapi dev src/construction_api/main.py
 ```
 
 The API will be available at `http://localhost:8000` with interactive docs at `http://localhost:8000/docs`.
+
+See [Installation](#installation) for alternative setup methods.
 
 ---
 
@@ -57,7 +57,7 @@ The API will be available at `http://localhost:8000` with interactive docs at `h
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/tonidy/construction-api.git
    cd construction-api
    ```
 
