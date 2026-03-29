@@ -1,0 +1,47 @@
+[project]
+name = "construction-api"
+version = "0.1.0"
+description = "Construction projects API - Backend endpoint to list construction projects filtered by area"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.135.2",
+    "uvicorn[standard]>=0.42.0",
+    "sqlalchemy>=2.0.48",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[dependency-groups]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "httpx>=0.25.0",
+    "ruff>=0.15.8",
+]
+
+[tool.ruff]
+# Exclude files/folders
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "*.egg-info",
+]
+
+# Line length
+line-length = 88
+
+[tool.ruff.format]
+# Use double quotes for strings
+quote-style = "double"
+# Use 4 spaces for indentation
+indent-style = "space"
+# Use Unix line endings (LF)
+line-ending = "lf"
+# Skip magic trailing comma in function signatures
+skip-magic-trailing-comma = false
