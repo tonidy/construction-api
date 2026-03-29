@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Optional, List
 from pydantic import BaseModel, ConfigDict
-from construction_api.models import Project
+from construction_api.domain.entities import Project
 
 
 class ProjectResponse(BaseModel):
@@ -18,16 +18,16 @@ class ProjectResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     @classmethod
-    def from_orm(
+    def from_domain(
         cls, project: Project, areas: Optional[List[str]] = None
     ) -> ProjectResponse:
-        """Convert Project ORM model to ProjectResponse."""
+        """Convert Project domain entity to ProjectResponse."""
         return cls(
             id=project.project_id,
             project_name=project.project_name,
             project_start=project.project_start,
             project_end=project.project_end,
-            company=project.company.company_name if project.company else None,
+            company=project.company_name,
             description=project.description,
             project_value=project.project_value,
             areas=areas or [],

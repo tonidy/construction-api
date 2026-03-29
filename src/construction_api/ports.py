@@ -7,7 +7,7 @@ They are implemented by adapters in the infrastructure layer.
 
 from abc import ABC, abstractmethod
 from typing import TypeVar, Generic, Optional, List
-from construction_api.models import Project as ProjectModel
+from construction_api.domain.entities import Project
 
 T = TypeVar("T")
 
@@ -47,14 +47,14 @@ class ProjectServicePort(ABC):
     """Application service interface for project operations."""
 
     @abstractmethod
-    def get_project_by_id(self, project_id: str) -> Optional[ProjectModel]:
+    def get_project_by_id(self, project_id: str) -> Optional[Project]:
         """Get a project by its ID."""
         pass
 
     @abstractmethod
     def list_projects_by_area(
         self, area: str, page: int = 1, per_page: int = 10
-    ) -> tuple[List[ProjectModel], int, str]:
+    ) -> tuple[List[Project], int, str]:
         """List projects filtered by area with pagination.
 
         Returns:

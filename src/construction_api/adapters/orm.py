@@ -1,3 +1,5 @@
+"""ORM adapters - SQLAlchemy classes for database persistence."""
+
 from sqlalchemy import Column, String, Integer, ForeignKey, Table
 from sqlalchemy.orm import relationship
 
@@ -13,16 +15,20 @@ project_area_map = Table(
 )
 
 
-class Company(Base):
+class CompanyORM(Base):
+    """Company ORM class for database operations."""
+
     __tablename__ = "companies"
 
     company_id = Column(String, primary_key=True)
     company_name = Column(String, nullable=False)
 
-    projects = relationship("Project", back_populates="company")
+    projects = relationship("ProjectORM", back_populates="company")
 
 
-class Project(Base):
+class ProjectORM(Base):
+    """Project ORM class for database operations."""
+
     __tablename__ = "projects"
 
     project_id = Column(String, primary_key=True)
@@ -33,13 +39,7 @@ class Project(Base):
     description = Column(String, nullable=True)
     project_value = Column(Integer, nullable=False)
 
-    company = relationship("Company", back_populates="projects")
-
-    @property
-    def areas(self) -> list[str]:
-        """Get list of areas for this project (lazy-loaded via query)."""
-        # This requires a session - better to use explicit method in repository
-        return []
+    company = relationship("CompanyORM", back_populates="projects")
 
     def __repr__(self):
-        return f"<Project(id={self.project_id}, name={self.project_name})>"
+        return f"<ProjectORM(id={self.project_id}, name={self.project_name})>"

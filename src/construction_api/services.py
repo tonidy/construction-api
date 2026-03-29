@@ -7,7 +7,7 @@ Business logic and application services. This is the heart of the application.
 from typing import Optional, List
 
 from construction_api.ports import ProjectServicePort, Repository
-from construction_api.models import Project
+from construction_api.domain.entities import Project
 
 
 class ProjectService(ProjectServicePort):

@@ -8,7 +8,7 @@ from sqlalchemy.pool import StaticPool
 
 from construction_api.database import Base
 from construction_api.main import app
-from construction_api.models import Project, Company, project_area_map
+from construction_api.adapters.orm import ProjectORM, CompanyORM, project_area_map
 from construction_api.dependencies import get_db, get_project_service, reset_container
 from construction_api.adapters import ProjectRepository
 from construction_api.services import ProjectService
@@ -68,8 +68,8 @@ def sample_projects(db_session):
     """Create sample projects for testing."""
     # Create companies
     companies = [
-        Company(company_id="c-001", company_name="Test Company 1"),
-        Company(company_id="c-002", company_name="Test Company 2"),
+        CompanyORM(company_id="c-001", company_name="Test Company 1"),
+        CompanyORM(company_id="c-002", company_name="Test Company 2"),
     ]
     for company in companies:
         db_session.add(company)
@@ -77,7 +77,7 @@ def sample_projects(db_session):
 
     # Create projects
     projects = [
-        Project(
+        ProjectORM(
             project_id="p-001",
             project_name="Test Project 1",
             project_start="2024-01-01 00:00:00",
@@ -86,7 +86,7 @@ def sample_projects(db_session):
             description="Description for test project 1",
             project_value=1000000,
         ),
-        Project(
+        ProjectORM(
             project_id="p-002",
             project_name="Test Project 2",
             project_start="2024-06-01 00:00:00",
@@ -95,7 +95,7 @@ def sample_projects(db_session):
             description="Description for test project 2",
             project_value=2000000,
         ),
-        Project(
+        ProjectORM(
             project_id="p-003",
             project_name="Test Project 3",
             project_start="2023-01-01 00:00:00",
@@ -129,12 +129,12 @@ def sample_projects(db_session):
 @pytest.fixture(scope="function")
 def projects_for_sorting(db_session):
     """Create projects with specific values to test sorting."""
-    company = Company(company_id="c-sort", company_name="Sort Company")
+    company = CompanyORM(company_id="c-sort", company_name="Sort Company")
     db_session.add(company)
     db_session.commit()
 
     projects = [
-        Project(
+        ProjectORM(
             project_id="p-s1",
             project_name="Zeta Project",
             project_start="2024-01-01 00:00:00",
@@ -143,7 +143,7 @@ def projects_for_sorting(db_session):
             description="Low value, Z name",
             project_value=100000,
         ),
-        Project(
+        ProjectORM(
             project_id="p-s2",
             project_name="Beta Project",
             project_start="2024-01-01 00:00:00",
@@ -152,7 +152,7 @@ def projects_for_sorting(db_session):
             description="High value, B name",
             project_value=500000,
         ),
-        Project(
+        ProjectORM(
             project_id="p-s3",
             project_name="Alpha Project",
             project_start="2024-01-01 00:00:00",

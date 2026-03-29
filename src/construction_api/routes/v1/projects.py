@@ -37,7 +37,9 @@ async def list_projects_by_area(
         page=page,
         per_page=per_page,
         total=total,
-        projects=[ProjectResponse.from_orm(p, areas=[original_area]) for p in projects],
+        projects=[
+            ProjectResponse.from_domain(p, areas=[original_area]) for p in projects
+        ],
     )
 
 
@@ -57,7 +59,7 @@ async def get_project(
         raise HTTPException(status_code=404, detail="Project not found")
 
     areas = project_service.get_areas_for_project(project_id)
-    return ProjectResponse.from_orm(project, areas=areas)
+    return ProjectResponse.from_domain(project, areas=areas)
 
 
 @router.get("/projects/{project_id}/areas", response_model=ProjectAreasResponse)
