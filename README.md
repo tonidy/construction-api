@@ -36,6 +36,7 @@ The API will be available at `http://localhost:8000` with interactive docs at `h
 ## Features
 
 - **Area-based Filtering**: Search projects by area with case-insensitive partial matching
+- **Sorting**: Projects sorted by value (highest first), then name (A–Z)
 - **Pagination**: 1-based page/per_page pagination for efficient data retrieval
 - **RFC 9457 Errors**: Standardized error response format
 - **SQLite Database**: Lightweight, file-based database
@@ -110,8 +111,11 @@ uv run uvicorn src.construction_api.main:app --host 0.0.0.0 --port 8000
 ### List Projects by Area
 
 ```
+GET /projects
 GET /api/v1/projects
 ```
+
+> Both paths serve the same endpoint. `/api/v1/projects` is the versioned canonical path.
 
 **Query Parameters:**
 
@@ -150,11 +154,13 @@ Returns all areas associated with a specific project.
 
 ## Example Requests
 
-### 1. List Projects in London
+### 1. List Projects in Leeds
 
 **Request:**
 ```bash
-curl "http://localhost:8000/api/v1/projects?area=London"
+curl "http://localhost:8000/projects?area=Leeds"
+# or with versioned path
+curl "http://localhost:8000/api/v1/projects?area=Leeds"
 ```
 
 **Response (200 OK):**
@@ -285,6 +291,7 @@ All errors follow **RFC 9457** (Problem Details for HTTP APIs) format.
 4. **Project IDs are strings** (e.g., `p-000001`) not integers.
 5. **Case-insensitive area matching** with partial match support (LIKE query).
 6. **Projects can have multiple areas** via a many-to-many relationship.
+7. **Additional response fields** (`id`, `areas`) are included beyond the spec example to improve API usability (e.g., enabling clients to fetch individual projects by ID).
 
 ---
 
@@ -370,7 +377,6 @@ construction-api/
 │   └── construction.db         # SQLite database (gitignored)
 ├── pyproject.toml              # Dependencies & config
 ├── uv.lock                     # Locked dependencies
-├── .ruff.toml                  # Ruff configuration
 └── README.md                   # This file
 ```
 

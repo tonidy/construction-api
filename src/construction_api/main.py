@@ -24,6 +24,7 @@ register_exception_handlers(app)
 
 # Include routers
 app.include_router(projects.router, prefix="/api/v1", tags=["projects"])
+app.include_router(projects.router, prefix="", tags=["projects"])
 
 
 @app.get("/")

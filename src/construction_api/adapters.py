@@ -7,6 +7,7 @@ This layer depends on the core (ports), not the other way around.
 
 from typing import Optional, List
 
+from sqlalchemy import asc, desc
 from sqlalchemy.orm import Session, joinedload
 
 from construction_api.ports import Repository
@@ -71,7 +72,10 @@ class ProjectRepository(Repository[ProjectModel]):
             query = query.join(project_area_map).filter(
                 func.lower(project_area_map.c.area).like(func.lower(area_pattern))
             )
-        return query.offset(offset).limit(limit).all()
+        return query.order_by(
+            desc(ProjectModel.project_value),
+            asc(ProjectModel.project_name),
+        ).offset(offset).limit(limit).all()
 
     def count_by_filter(self, **filters) -> int:
         """Count entities by dynamic filters (case-insensitive, partial match)."""

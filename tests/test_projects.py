@@ -113,3 +113,17 @@ def test_list_projects_invalid_pagination(client: TestClient, sample_projects):
     data = response.json()
     assert data["title"] == "Request Validation Error"
     assert data["status"] == 422
+
+    # Non-numeric page
+    response = client.get("/api/v1/projects?area=London&page=abc")
+    assert response.status_code == 422
+    data = response.json()
+    assert data["title"] == "Request Validation Error"
+    assert data["status"] == 422
+
+    # Non-numeric per_page
+    response = client.get("/api/v1/projects?area=London&per_page=xyz")
+    assert response.status_code == 422
+    data = response.json()
+    assert data["title"] == "Request Validation Error"
+    assert data["status"] == 422
