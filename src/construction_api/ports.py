@@ -54,6 +54,10 @@ class ProjectServicePort(ABC):
     @abstractmethod
     def list_projects_by_area(
         self, area: str, page: int = 1, per_page: int = 10
-    ) -> tuple[List[ProjectModel], int]:
-        """List projects filtered by area with pagination."""
+    ) -> tuple[List[ProjectModel], int, str]:
+        """List projects filtered by area with pagination.
+
+        Returns:
+            Tuple of (projects, total_count, original_area_case)
+        """
         pass

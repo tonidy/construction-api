@@ -4,9 +4,8 @@ Dependency Injection Container - Hexagonal Lite Architecture
 This module provides the DI container and dependency providers for the application.
 """
 
-from typing import Annotated, Generator
+from typing import Generator
 
-from fastapi import Depends
 from sqlalchemy.orm import Session
 
 from construction_api.database import SessionLocal
@@ -110,7 +109,3 @@ def get_project_service() -> Generator[ProjectServicePort, None, None]:
         yield _get_project_service_internal(db)
     finally:
         db.close()
-
-
-# Type alias for dependency injection
-ProjectServiceDep = Annotated[ProjectServicePort, Depends(get_project_service)]
