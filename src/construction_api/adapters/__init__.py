@@ -5,6 +5,8 @@ from construction_api.adapters.orm import CompanyORM, ProjectORM, project_area_m
 # Import repository implementations
 # Note: Import after orm to avoid circular dependency
 from construction_api.adapters.repository import ProjectRepository
+from construction_api.adapters.dummy_repository import DummyProjectRepository
+from construction_api.adapters.raw_repository import RawProjectRepository
 
 __all__ = [
     # ORM classes
@@ -13,4 +15,6 @@ __all__ = [
     "project_area_map",
     # Repository implementations
     "ProjectRepository",
+    "DummyProjectRepository",
+    "RawProjectRepository",
 ]
